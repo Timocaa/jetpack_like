@@ -5,14 +5,14 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "../inc/Input.hpp"
 
 //defines
 #define WIN_WIDHT   800
 #define WIN_HEIGHT  600
 
 // prototypes
-void    inputHandler(sf::Event event, sf::RenderWindow &window);
-bool    loadFont(sf::Font &font);
-void    initText(sf::Text &txt, sf::Font &font, std::string const str);
-
+bool    loadFont();
+void    initText(std::string const str);
+void    chckBtn();
 #endif

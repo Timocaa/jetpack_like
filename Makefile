@@ -1,8 +1,8 @@
 MAKEFLAGS = --no-print-directory
 
 #=================================COMPILATION==================================#
-CC = g++ -g
-CPPFLAGS =
+CC = g++
+CPPFLAGS = -g -Wall -Werror -Wextra
 LIBFSMLFLAG = -L SFML_linux/lib -lsfml-graphics -lsfml-window -lsfml-system
 LIBFSMLFLAGWINDOWS = -L SFML_windows/lib -lsfml-graphics -lsfml-window -lsfml-system
 
@@ -19,8 +19,7 @@ INCLUDES = -I SFML_linux/include -I includes
 
 #=================================SOURCE FILES=================================#
 SRCS =	src/main.cpp \
-		src/inputHandler.cpp \
-		src/initText.cpp
+		src/Input.cpp
 
 #====================================OBJECTS===================================#
 OBJS = ${SRCS:.cpp=.o}
