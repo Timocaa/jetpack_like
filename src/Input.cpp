@@ -25,7 +25,7 @@ void    Input::inputHandler(sf::Event event, sf::RenderWindow &window)
     {
         switch (event.key.code)
         {
-            case sf::Keyboard::Escape: _button.escape = true; break;
+            case sf::Keyboard::Escape: _button.escape = true; window.close(); break;
             case sf::Keyboard::A: _button.left = true; break;
             case sf::Keyboard::D: _button.right = true; break;
             case sf::Keyboard::W: _button.up = true; break;

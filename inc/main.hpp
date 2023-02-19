@@ -10,6 +10,7 @@
 //defines
 #define WIN_WIDHT   800
 #define WIN_HEIGHT  600
+#define STEP        2
 
 // prototypes
 bool    loadFont();

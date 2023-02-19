@@ -4,8 +4,11 @@
 sf::Font            font;
 sf::Text            txt;
 sf::RenderWindow    window;
+sf::CircleShape     circle;
 Input               input;
 int                 posX = 20;
+int                 posY = 200;
+sf::Vector2i        mousePos;
 
 int main()
 {
@@ -13,7 +16,10 @@ int main()
     sf::ContextSettings option;
     option.antialiasingLevel = 8;
     // window creation 
-    window.create(sf::VideoMode(WIN_WIDHT, WIN_HEIGHT, 32), "... New Game ...", sf::Style::Default, option);
+    sf::VideoMode   desktop = sf::VideoMode::getDesktopMode();
+    window.create(sf::VideoMode(WIN_WIDHT, WIN_HEIGHT, desktop.bitsPerPixel), "... New Game ...", sf::Style::Default, option);
+    window.setPosition(sf::Vector2i(0, 0));
+    window.setFramerateLimit(60);
     // vsync activation
     window.setVerticalSyncEnabled(true);
     // loading font
@@ -23,7 +29,7 @@ int main()
     initText("Hello World...!");
 
     //create circle
-    sf::CircleShape circle(75);
+    circle.setRadius(50);
     circle.setFillColor(sf::Color(109, 158, 235));
     circle.setOutlineColor(sf::Color::Green);
     circle.setOutlineThickness(5);
@@ -49,7 +55,7 @@ int main()
             // management inputs and event
             input.inputHandler(event, window);
             chckBtn();
-            circle.setPosition(posX, 200);
+            circle.setPosition(posX, posY);
 
         }
 
@@ -99,26 +105,39 @@ void chckBtn()
 {
     if (input.getbutton().left == true)
     {
-        initText("Left");
-        posX -= 10;
-        if (posX < 20)
-            posX = 20;
+        posX -= STEP;
+        if (posX < 5)
+            posX = 5;
         initText(std::to_string(posX));
     }
     if (input.getbutton().right == true)
     {
-        initText("Right");
-        posX += 10;
-        if (posX > 600)
-            posX = 600;
+        posX += STEP;
+        if (posX > WIN_WIDHT - 105)
+            posX = WIN_WIDHT - 105;
         initText(std::to_string(posX));
     }
     if (input.getbutton().up == true)
-        initText("Up");
+    {
+        posY -= STEP;
+        if (posY <= 5)
+            posY = 5;
+        initText(std::to_string(posY));
+    }
     if (input.getbutton().down == true)
-        initText("Down");
-    if (input.getbutton().escape == true)
-        initText("Esc");
+    {
+        posY += STEP;
+        if (posY > WIN_HEIGHT - 105)
+            posY = WIN_HEIGHT - 105;
+        initText(std::to_string(posY));
+    }
     if (input.getbutton().attack == true)
+    {
+        // record mouse coord and set pos of circle
+        mousePos = sf::Mouse::getPosition(window);
+        std::cout << "mouse.x = " << mousePos.x << "\n" << "mouse Y = " << mousePos.y << "\n\n";
+        posX = mousePos.x - 50;
+        posY = mousePos.y - 50;
         initText("Attack");
+    }
 }
