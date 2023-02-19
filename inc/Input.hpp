@@ -14,6 +14,7 @@ class Input
 
         t_button    getbutton() const;
         void        inputHandler(sf::Event event, sf::RenderWindow &window);
+        void        chckBtn(sf::RenderWindow &window, int *posX, int *posY);
         ~Input();
     private:
         t_button    _button;

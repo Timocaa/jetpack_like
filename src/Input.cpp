@@ -6,8 +6,10 @@ Input::Input()
     _button.up = false;
     _button.right = false;
     _button.left = false;
-    _button.escape = false;
     _button.down = false;
+    
+    _button.escape = false;
+    
     _button.attack = false;
 }
 
@@ -55,6 +57,44 @@ void    Input::inputHandler(sf::Event event, sf::RenderWindow &window)
     {
         if (event.mouseButton.button == sf::Mouse::Left)
             _button.attack = false;
+    }
+}
+
+void Input::chckBtn(sf::RenderWindow &window, int *posX, int *posY)
+{
+    if (getbutton().left == true)
+    {
+        *posX -= STEP;
+        if (*posX < 5)
+            *posX = 5;
+    }
+    if (getbutton().right == true)
+    {
+        *posX += STEP;
+        if (*posX > WIN_WIDHT - 105)
+            *posX = WIN_WIDHT - 105;
+    }
+    if (getbutton().up == true)
+    {
+        *posY -= STEP;
+        if (*posY <= 5)
+            *posY = 5;
+    }
+    if (getbutton().down == true)
+    {
+        *posY += STEP;
+        if (*posY > WIN_HEIGHT - 105)
+            *posY = WIN_HEIGHT - 105;
+    }
+    if (getbutton().attack == true)
+    {
+        // record mouse coord and set pos of circle
+        sf::Vector2i    mousePos;
+        mousePos = sf::Mouse::getPosition(window);
+        std::cout << "mouse.x = " << mousePos.x << "\n" << "mouse Y = " << mousePos.y << "\n\n";
+        *posX = mousePos.x - 16;
+        *posY = mousePos.y - 16;
+        std::cout << "attack Button" << std::endl;
     }
 }
 

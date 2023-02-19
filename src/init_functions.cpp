@@ -1,4 +1,5 @@
 #include "../inc/prog.hpp"
+#include "../inc/main.hpp"
 
 // check if font is propely established
 bool    loadFont(sf::Font &font)
@@ -11,20 +12,22 @@ bool    loadFont(sf::Font &font)
     return (true);
 }
 
-bool    init_game(sf::RenderWindow &window, sf::Font &font)
+bool    init_game(s_game &g)
 {
+    g.posX = 20;
+    g.posY = 200;
     // window option
     sf::ContextSettings option;
     option.antialiasingLevel = 8;
     // window creation 
     sf::VideoMode   desktop = sf::VideoMode::getDesktopMode();
-    window.create(sf::VideoMode(WIN_WIDHT, WIN_HEIGHT, desktop.bitsPerPixel), "... New Game ...", sf::Style::Default, option);
-    window.setPosition(sf::Vector2i(0, 0));
-    window.setFramerateLimit(60);
+    g.window.create(sf::VideoMode(WIN_WIDHT, WIN_HEIGHT, desktop.bitsPerPixel), "... New Game ...", sf::Style::Default, option);
+    g.window.setPosition(sf::Vector2i(0, 0));
+    g.window.setFramerateLimit(60);
     // vsync activation
-    window.setVerticalSyncEnabled(true);
+    g.window.setVerticalSyncEnabled(true);
     // loading font
-    if (!loadFont(font))
+    if (!loadFont(g.font))
         return (false);
     return (true);
 }
