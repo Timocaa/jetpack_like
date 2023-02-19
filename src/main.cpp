@@ -1,10 +1,6 @@
 #include "../inc/main.hpp"
 
 //global variable
-sf::Font            font;
-sf::Text            txt;
-sf::RenderWindow    window;
-sf::CircleShape     circle;
 Input               input;
 int                 posX = 20;
 int                 posY = 200;
@@ -12,23 +8,18 @@ sf::Vector2i        mousePos;
 
 int main()
 {
-    // window option
-    sf::ContextSettings option;
-    option.antialiasingLevel = 8;
-    // window creation 
-    sf::VideoMode   desktop = sf::VideoMode::getDesktopMode();
-    window.create(sf::VideoMode(WIN_WIDHT, WIN_HEIGHT, desktop.bitsPerPixel), "... New Game ...", sf::Style::Default, option);
-    window.setPosition(sf::Vector2i(0, 0));
-    window.setFramerateLimit(60);
-    // vsync activation
-    window.setVerticalSyncEnabled(true);
-    // loading font
-    if (!loadFont())
-        return (0);
+    sf::RenderWindow    window;
+    sf::Text            txt;
+    sf::Font            font;
+
+
+    // window init
+    init_game(window, font);
     // text initialisation
-    initText("Hello World...!");
+    initText(txt, font, "Hello World...!");
 
     //create circle
+    sf::CircleShape     circle;
     circle.setRadius(50);
     circle.setFillColor(sf::Color(109, 158, 235));
     circle.setOutlineColor(sf::Color::Green);
@@ -54,7 +45,7 @@ int main()
         {
             // management inputs and event
             input.inputHandler(event, window);
-            chckBtn();
+            chckBtn(window);
             circle.setPosition(posX, posY);
 
         }
@@ -75,61 +66,31 @@ int main()
     return 0;
 }
 
-// check if font is propely established
-bool    loadFont()
-{
-    if (!font.loadFromFile("res/Anglican.ttf")) //set the path of font depending launch
-    {
-        std::cerr << "Error loading font..." << std::endl;
-        return (false);
-    }
-    return (true);
-}
-
-//set text option
-void    initText(std::string  const str)
-{
-    // set the font for text
-    txt.setFont(font);
-    // set characters in text
-    txt.setString(str);
-    // set height of font
-    txt.setCharacterSize(42);
-    // set color of text
-    txt.setFillColor(sf::Color::Cyan);
-    // set style of text
-    txt.setStyle(sf::Text::Bold | sf::Text::Underlined);
-}
-
-void chckBtn()
+void chckBtn(sf::RenderWindow &window)
 {
     if (input.getbutton().left == true)
     {
         posX -= STEP;
         if (posX < 5)
             posX = 5;
-        initText(std::to_string(posX));
     }
     if (input.getbutton().right == true)
     {
         posX += STEP;
         if (posX > WIN_WIDHT - 105)
             posX = WIN_WIDHT - 105;
-        initText(std::to_string(posX));
     }
     if (input.getbutton().up == true)
     {
         posY -= STEP;
         if (posY <= 5)
             posY = 5;
-        initText(std::to_string(posY));
     }
     if (input.getbutton().down == true)
     {
         posY += STEP;
         if (posY > WIN_HEIGHT - 105)
             posY = WIN_HEIGHT - 105;
-        initText(std::to_string(posY));
     }
     if (input.getbutton().attack == true)
     {
@@ -138,6 +99,6 @@ void chckBtn()
         std::cout << "mouse.x = " << mousePos.x << "\n" << "mouse Y = " << mousePos.y << "\n\n";
         posX = mousePos.x - 50;
         posY = mousePos.y - 50;
-        initText("Attack");
+        std::cout << "attack Button" << std::endl;
     }
 }

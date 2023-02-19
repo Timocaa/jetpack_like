@@ -57,3 +57,5 @@ void    Input::inputHandler(sf::Event event, sf::RenderWindow &window)
             _button.attack = false;
     }
 }
+
+Input::~Input() {};

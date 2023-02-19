@@ -19,7 +19,8 @@ INCLUDES = -I SFML_linux/include -I includes
 
 #=================================SOURCE FILES=================================#
 SRCS =	src/main.cpp \
-		src/Input.cpp
+		src/Input.cpp \
+		src/init_functions.cpp
 
 #====================================OBJECTS===================================#
 OBJS = ${SRCS:.cpp=.o}
