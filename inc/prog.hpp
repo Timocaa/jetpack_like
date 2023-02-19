@@ -11,4 +11,12 @@
 #define WIN_HEIGHT  600
 #define STEP        2
 
+enum Dir
+{
+    DOWN,
+    RIGHT,
+    UP,
+    LEFT
+};
+
 #endif

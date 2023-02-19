@@ -6,6 +6,7 @@
 #include "Input.hpp"
 
 // game variables
+
 struct s_game
 {
     Input               input;

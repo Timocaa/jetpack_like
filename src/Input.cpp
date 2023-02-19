@@ -60,28 +60,32 @@ void    Input::inputHandler(sf::Event event, sf::RenderWindow &window)
     }
 }
 
-void Input::chckBtn(sf::RenderWindow &window, int *posX, int *posY)
+void Input::chckBtn(sf::RenderWindow &window, int *posX, int *posY, sf::Vector2i &anim)
 {
     if (getbutton().left == true)
     {
+        anim.y = LEFT;
         *posX -= STEP;
         if (*posX < 5)
             *posX = 5;
     }
     if (getbutton().right == true)
     {
+        anim.y = RIGHT;
         *posX += STEP;
         if (*posX > WIN_WIDHT - 105)
             *posX = WIN_WIDHT - 105;
     }
     if (getbutton().up == true)
     {
+        anim.y = UP;
         *posY -= STEP;
         if (*posY <= 5)
             *posY = 5;
     }
     if (getbutton().down == true)
     {
+        anim.y = DOWN;
         *posY += STEP;
         if (*posY > WIN_HEIGHT - 105)
             *posY = WIN_HEIGHT - 105;

@@ -23,7 +23,7 @@ bool    init_game(s_game &g)
     sf::VideoMode   desktop = sf::VideoMode::getDesktopMode();
     g.window.create(sf::VideoMode(WIN_WIDHT, WIN_HEIGHT, desktop.bitsPerPixel), "... New Game ...", sf::Style::Default, option);
     g.window.setPosition(sf::Vector2i(0, 0));
-    g.window.setFramerateLimit(60);
+    g.window.setFramerateLimit(12);
     // vsync activation
     g.window.setVerticalSyncEnabled(true);
     // loading font
