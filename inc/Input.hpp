@@ -1,23 +1,33 @@
 #ifndef INPUT_HPP
 # define INPUT_HPP
 
-#include "prog.hpp"
+#include <SFML/Graphics.hpp>
 
 struct t_button
-{ bool  left, right, up, down,
-        attack, escape; };
+{
+	bool	right;
+	bool	left;
+	bool	up;
+	bool	action;
+	bool	escape;
+};
 
 class Input
 {
-    public:
-        Input();
+	public:
+		//---- canonical form ----//
+		Input();
+		~Input();
+		//---- member method ----//
+		void	handlerInput(sf::Event &event, sf::RenderWindow &window);
+		void	checkBtn(sf::Text &txt);
 
-        t_button    getbutton() const;
-        void        inputHandler(sf::Event event, sf::RenderWindow &window);
-        void        chckBtn(sf::RenderWindow &window, int *posX, int *posY, sf::Vector2i &anim);
-        ~Input();
-    private:
-        t_button    _button;
+	private:
+		//---- member object ----//
+		t_button	_button;
+		//---- canonical form ----//
+		Input(Input const &rhs);
+		Input	&operator=(Input const &rhs);
 };
 
 #endif
