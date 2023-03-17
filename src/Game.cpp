@@ -7,14 +7,24 @@
 */
 Game::Game():	_window(),
 				_font(),
+				_heroTexture(),
+				_heroSprite(),
 				_input()
 {
+	// window creation and settings
 	this->_window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT, 32), "Game", sf::Style::Default);
 	// vsync activation
 	this->_window.setVerticalSyncEnabled(true);
+//	this->_window.setFramerateLimit(26);
+	// hero sprite init
+	if (!this->_heroTexture.loadFromFile("res/sprites/player.png"))
+		throw std::logic_error("");
+	this->_heroSprite.setTexture(this->_heroTexture);
+	this->_heroSprite.setTextureRect(sf::IntRect(0, 0, SPRITE_SIZE, SPRITE_SIZE));
+	this->_heroSprite.setPosition(400, 300);
 	// load font for text
 	if(!this->_font.loadFromFile("res/font/Anglican.ttf"))
-		throw std::logic_error("Error: loading font failed...");
+		throw std::logic_error("");
 }
 
 /*
@@ -48,12 +58,16 @@ void	Game::start()
 	while (this->_window.isOpen())
 	{
 		sf::Event	event;
+		// manage keyboard events
 		this->_input.handlerInput(event, this->_window);
-		this->_input.checkBtn(this->_txt);
-		
+		this->_input.checkBtn(this->_heroSprite);
 
+//		this->_input.checkCollision(this->_heroSprite, cube.getGlobalBounds());
+
+		// for display in the window
 		this->_window.clear(sf::Color::Black);
-
+		
+		this->_window.draw(this->_heroSprite);
 
 		this->_window.display();
 	}

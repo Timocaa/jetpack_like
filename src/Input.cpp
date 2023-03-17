@@ -5,13 +5,14 @@
 *	params: void
 *	return: void
 */
-Input::Input()
+Input::Input(): _animHero(0, Idle), _clockAnim(), _heroHitBox()
 {
 	this->_button.up = false;
 	this->_button.right = false;
 	this->_button.left = false;
 	this->_button.action = false;
 	this->_button.escape = false;
+	this->_idle = true;
 }
 
 /*
@@ -69,6 +70,7 @@ void	Input::handlerInput(sf::Event &event, sf::RenderWindow &window)
     	        case sf::Keyboard::E: _button.action = false; break;
         	    default: break;
        		 }
+			this->_idle = true;
     	}
 	}
 }
@@ -78,24 +80,71 @@ void	Input::handlerInput(sf::Event &event, sf::RenderWindow &window)
 *	params: Game &
 *	return: void
 */
-void Input::checkBtn(sf::Text &txt)
+void Input::checkBtn(sf::Sprite &heroSprite)
 {
     if (_button.left == true)
     {
-		txt.setString("go to the Left...");
+		this->_idle = false;
+		this->_animHero.y = Left;
+		heroSprite.move(-SPEED, 0);
     }
     if (_button.right == true)
     {
-		txt.setString("go to the Right...");
+		this->_idle = false;
+		this->_animHero.y = Right;
+		heroSprite.move(SPEED, 0);
     }
     if (_button.up == true)
     {
-		txt.setString("go to Jump...");
+		this->_idle = false;
+		this->_animHero.y = Up_right;
+		heroSprite.move(0, -SPEED);
     }
     if (_button.action == true)
     {
-		txt.setString("take a snapshot...");
+		this->_idle = false;
+		this->_animHero.y = Left;
+		std::cout << "action baby..." << std::endl;
     }
+	this->animPlayer();
+	heroSprite.setTextureRect(sf::IntRect(_animHero.x * SPRITE_SIZE, _animHero.y * SPRITE_SIZE,
+								SPRITE_SIZE, SPRITE_SIZE));
+}
+
+/*
+*	brief:  setting sprite animation for player
+*	params: void
+*	return: void
+*/
+void	Input::animPlayer()
+{
+	if (this->_clockAnim.getElapsedTime().asSeconds() > 0.05f)
+	{
+		if (!this->_idle)
+			this->_animHero.x++;
+		else
+		{
+			this->_animHero.y = 0;
+		}
+		if (this->_animHero.x > 8)
+			this->_animHero.x = 0;
+		this->_clockAnim.restart();
+	}
+}
+
+/*
+*	brief:  Check if player go to collision with map elements
+*	params: sf::FloatRect &, sf::FloatRect &
+*	return: void
+*/
+void	Input::checkCollision(sf::Sprite &heroSprite, sf::FloatRect cubBox)
+{
+	sf::FloatRect	heroBox = heroSprite.getGlobalBounds();
+	if (heroBox.intersects(cubBox))
+	{
+		std::cout << "hit...!\n";
+		heroSprite.move(0, 0);
+	}
 }
 
 /*

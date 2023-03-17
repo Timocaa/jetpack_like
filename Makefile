@@ -110,9 +110,9 @@ create_progressbar:
 	@echo '}\n' >> .progressbar.cpp
 	@echo 'int	main(int ac, char **av)' >> .progressbar.cpp
 	@echo '{' >> .progressbar.cpp
-	@echo '	int	nb = atoi(av[1]);\n' >> .progressbar.cpp
+	@echo '	int	nb = atoi(av[1]) * 3;\n' >> .progressbar.cpp
 	@echo '	printf("\\e[1A\\e[K");' >> .progressbar.cpp
-	@echo '	for (int i = 0; i <= 100; i += $(PROGRESS_BAR_DETAIL))' >> .progressbar.cpp
+	@echo '	for (int i = 0; i <= 300; i += $(PROGRESS_BAR_DETAIL))' >> .progressbar.cpp
 	@echo '	{' >> .progressbar.cpp
 	@echo '		if (i > nb)' >> .progressbar.cpp
 	@echo '			printf("\\e[48;5;196m ");' >> .progressbar.cpp
@@ -120,10 +120,10 @@ create_progressbar:
 	@echo '			print_color((nb - (i / $(PROGRESS_BAR_DETAIL))) % 10);' >> .progressbar.cpp
 	@echo '	}' >> .progressbar.cpp
 	@echo '	print_color(-1);' >> .progressbar.cpp
-	@echo '	if (nb == 100)' >> .progressbar.cpp
+	@echo '	if (nb == 300)' >> .progressbar.cpp
 	@echo '		printf("\e[1m\e[38;5;76m100%%\\e[0m\\n");' >> .progressbar.cpp
 	@echo '	else' >> .progressbar.cpp
-	@echo '		printf("\e[1m\e[38;5;220m%i%%\\e[0m\\n", nb);' >> .progressbar.cpp
+	@echo '		printf("\e[1m\e[38;5;220m%i%%\\e[0m\\n", nb / 3);' >> .progressbar.cpp
 	@echo '}' >> .progressbar.cpp
 	@$(CC) .progressbar.cpp -o .progressbar
 	@rm .progressbar.cpp
