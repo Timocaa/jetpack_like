@@ -3,19 +3,22 @@
 
 #include <SFML/Graphics.hpp>
 #include <exception>
+#include <fstream>
+#include <cctype>
 
 #include "Input.hpp"
 #include "Map.hpp"
 
-#include <fstream>
 #include <string>
 #include <vector>
 #include <sstream>
 #include <utility>
 
-#define WIN_WIDTH	1120
+#define WIN_WIDTH	1000
 #define WIN_HEIGHT	720
 #define SPRITE_SIZE	40
+#define COLS		25
+#define LINES		18
 
 class Game
 {
@@ -33,13 +36,15 @@ class Game
 		sf::Font			_font;
 		sf::Texture			_heroTexture;
 		sf::Sprite			_heroSprite;
-
 		Input				_input;
+		Map					_map;
+		int					_mapLoaded[450];
 		sf::Text			_txt;
 
 		//---- canonical form ----//
 		Game(Game const &rhs);
 		Game	&operator=(Game const &rhs);
+		void	mapLoader(std::string const &file_map);
 };
 
 #endif

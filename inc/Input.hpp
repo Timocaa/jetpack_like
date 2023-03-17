@@ -5,7 +5,7 @@
 #include <iostream>
 
 #define SPRITE_SIZE	40
-#define SPEED		2
+#define SPEED		3
 
 struct t_button
 {
