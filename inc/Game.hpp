@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                         LLr::,::, ,:L    ,     :i;     .   */
+/*   Game.hpp                              ,,.:::,   L;i   ::,    Y:; .:Li.   */
+/*                                            i:;   :i:r   i::   ,i::i;,      */
+/*   By:  Timoca                             ;ri,   UiiL  ;;:i   Yi::::       */
+/*                                          .krj   UYLrY.,L;:r  lU7JYriYi,    */
+/*   Created: 2023/03/19 17:47:34           qKKL  :Dd.;YlcLLlJ, iRk.  UYTK    */
+/*   Updated: 2023/03/19 18:33:18           .UM.  RDD :DRi LU   DDK    ;cK    */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GAME_HPP
 # define GAME_HPP
 
@@ -6,6 +18,7 @@
 #include <fstream>
 #include <cctype>
 
+#include "Player.hpp"
 #include "Input.hpp"
 #include "Map.hpp"
 
@@ -34,8 +47,8 @@ class Game
 		//---- member object ----//
 		sf::RenderWindow	_window;
 		sf::Font			_font;
-		sf::Texture			_heroTexture;
-		sf::Sprite			_heroSprite;
+		Player				_player;
+		
 		Input				_input;
 		Map					_map;
 		int					_mapLoaded[450];

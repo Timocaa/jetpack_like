@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                         LLr::,::, ,:L    ,     :i;     .   */
+/*   Input.hpp                             ,,.:::,   L;i   ::,    Y:; .:Li.   */
+/*                                            i:;   :i:r   i::   ,i::i;,      */
+/*   By:  Timoca                             ;ri,   UiiL  ;;:i   Yi::::       */
+/*                                          .krj   UYLrY.,L;:r  lU7JYriYi,    */
+/*   Created: 2023/03/19 17:47:45           qKKL  :Dd.;YlcLLlJ, iRk.  UYTK    */
+/*   Updated: 2023/03/19 20:31:09           .UM.  RDD :DRi LU   DDK    ;cK    */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef INPUT_HPP
 # define INPUT_HPP
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include "Player.hpp"
 
 #define SPRITE_SIZE	40
 #define SPEED		3
@@ -34,26 +47,21 @@ class Input
 		Input();
 		~Input();
 		//---- member method ----//
-		void	handlerInput(sf::Event &event, sf::RenderWindow &window);
-		void	checkBtn(sf::Sprite &heroSprite, int *collisionMap);
+		void	handlerInput(sf::Event &event, sf::RenderWindow &window, Player &player);
+		void	checkBtn(Player &player, int *collisionMap);
 
 	private:
 		//---- member object ----//
 		t_button	_button;
 		
-		sf::Vector2i	_animHero;
-		sf::Clock		_clockAnim;
-		sf::Clock		_clockIdle;
-		bool			_idle;
-		sf::FloatRect	_heroHitBox;
-		bool			_fly;
-		int				_dir;
+		sf::Clock		_clockAnim; //player
+		sf::Clock		_clockIdle; //player
 
 		//---- canonical form ----//
 		Input(Input const &rhs);
 		Input	&operator=(Input const &rhs);
 		//---- private methode ----//
-		void	animPlayer();
+		void	animPlayer(Player &player);
 		void	checkCollision(sf::Sprite &heroSprite, int *collisionMap);
 };
 

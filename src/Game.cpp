@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                         LLr::,::, ,:L    ,     :i;     .   */
+/*   Game.cpp                              ,,.:::,   L;i   ::,    Y:; .:Li.   */
+/*                                            i:;   :i:r   i::   ,i::i;,      */
+/*   By:  Timoca                             ;ri,   UiiL  ;;:i   Yi::::       */
+/*                                          .krj   UYLrY.,L;:r  lU7JYriYi,    */
+/*   Created: 2023/03/19 17:47:55           qKKL  :Dd.;YlcLLlJ, iRk.  UYTK    */
+/*   Updated: 2023/03/19 19:51:55           .UM.  RDD :DRi LU   DDK    ;cK    */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/Game.hpp"
 
 /*
@@ -7,8 +19,7 @@
 */
 Game::Game():	_window(),
 				_font(),
-				_heroTexture(),
-				_heroSprite(),
+				_player(),
 				_input(),
 				_map()
 {
@@ -17,11 +28,7 @@ Game::Game():	_window(),
 	// vsync activation
 	this->_window.setVerticalSyncEnabled(true);
 //	this->_window.setFramerateLimit(26);
-	// hero sprite init
-	if (!this->_heroTexture.loadFromFile("res/sprites/player.png"))
-		throw std::logic_error("");
-	this->_heroSprite.setTexture(this->_heroTexture);
-	this->_heroSprite.setPosition(160, 600);
+	
 	// load font for text
 	if(!this->_font.loadFromFile("res/font/Anglican.ttf"))
 		throw std::logic_error("");
@@ -65,16 +72,14 @@ void	Game::start()
 	{
 		sf::Event	event;
 		// manage keyboard events
-		this->_input.handlerInput(event, this->_window);
-		this->_input.checkBtn(this->_heroSprite, this->_mapCollisionLoaded);
-
-//		this->_input.checkCollision(this->_heroSprite, cube.getGlobalBounds());
+		this->_input.handlerInput(event, this->_window, this->_player);
+		this->_input.checkBtn(this->_player, this->_mapCollisionLoaded);
 
 		// for display in the window
 		this->_window.clear(sf::Color::Black);
 	
 		this->_window.draw(this->_map);
-		this->_window.draw(this->_heroSprite);
+		this->_window.draw(this->_player.getSprite());
 
 		//for debug collisions
 		for (unsigned int j = 0; j < 18; j++)
