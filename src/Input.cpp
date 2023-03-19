@@ -5,7 +5,7 @@
 *	params: void
 *	return: void
 */
-Input::Input(): _animHero(0, Idle), _clockAnim(), _heroHitBox()
+Input::Input(): _animHero(0, Idle), _clockAnim(), _clockIdle(), _heroHitBox()
 {
 	this->_button.up = false;
 	this->_button.right = false;
@@ -13,6 +13,8 @@ Input::Input(): _animHero(0, Idle), _clockAnim(), _heroHitBox()
 	this->_button.action = false;
 	this->_button.escape = false;
 	this->_idle = true;
+	this->_fly = false;
+	this->_dir = 1;
 }
 
 /*
@@ -80,25 +82,52 @@ void	Input::handlerInput(sf::Event &event, sf::RenderWindow &window)
 *	params: Game &
 *	return: void
 */
-void Input::checkBtn(sf::Sprite &heroSprite)
+void Input::checkBtn(sf::Sprite &heroSprite, int *collisionMap)
 {
+	int hPosX = round(heroSprite.getPosition().x / SPRITE_SIZE);
+	int hPosY = round(heroSprite.getPosition().y / SPRITE_SIZE);
     if (_button.left == true)
     {
+		if (!collisionMap[hPosX + (hPosY + 1) * 25])
+			this->_fly = true;
 		this->_idle = false;
-		this->_animHero.y = Left;
-		heroSprite.move(-SPEED, 0);
+		this->_dir = -1;
+		if (!this->_fly)
+			this->_animHero.y = Left;
+		else
+			this->_animHero.y = Up_left;
+		hPosX = floor((heroSprite.getPosition().x - (SPEED)) / SPRITE_SIZE);
+		if (heroSprite.getPosition().x - SPEED > 0)
+			if (!collisionMap[hPosX + hPosY * 25])
+				heroSprite.move(-SPEED, 0);
     }
     if (_button.right == true)
     {
+		if (!collisionMap[hPosX + (hPosY + 1) * 25])
+			this->_fly = true;
 		this->_idle = false;
-		this->_animHero.y = Right;
-		heroSprite.move(SPEED, 0);
+		this->_dir = 1;
+		if (!this->_fly)
+			this->_animHero.y = Right;
+		else
+			this->_animHero.y = Up_right;
+		hPosX = ceil((heroSprite.getPosition().x + (SPEED)) / SPRITE_SIZE);
+		if (heroSprite.getPosition().x < 1000 - SPRITE_SIZE)
+			if (!collisionMap[hPosX + hPosY * 25])
+				heroSprite.move(SPEED, 0);
     }
     if (_button.up == true)
     {
 		this->_idle = false;
-		this->_animHero.y = Up_right;
-		heroSprite.move(0, -SPEED);
+		this->_fly = true;
+		if (this->_dir == 1)
+			this->_animHero.y = Up_right;
+		else
+			this->_animHero.y = Up_left;
+		hPosY = round((heroSprite.getPosition().y - (SPEED * 8)) / SPRITE_SIZE);
+		if (heroSprite.getPosition().y - 1 > 0)
+			if (!collisionMap[hPosX + hPosY * 25])
+				heroSprite.move(0, -SPEED);
     }
     if (_button.action == true)
     {
@@ -106,6 +135,14 @@ void Input::checkBtn(sf::Sprite &heroSprite)
 		this->_animHero.y = Left;
 		std::cout << "action baby..." << std::endl;
     }
+	if (this->_fly && this->_button.up == false)
+	{
+		hPosY = round((heroSprite.getPosition().y + (SPEED * 7)) / SPRITE_SIZE);
+		if (!collisionMap[hPosX + hPosY * 25])
+			heroSprite.move(0, SPEED);
+		else
+			this->_fly = false;
+	}
 	this->animPlayer();
 	heroSprite.setTextureRect(sf::IntRect(_animHero.x * SPRITE_SIZE, _animHero.y * SPRITE_SIZE,
 								SPRITE_SIZE, SPRITE_SIZE));
@@ -124,27 +161,23 @@ void	Input::animPlayer()
 			this->_animHero.x++;
 		else
 		{
-			this->_animHero.y = 0;
+			if (!this->_fly)
+			{
+				this->_animHero.y = 0;
+				if (this->_clockIdle.getElapsedTime().asSeconds() > 0.7f)
+				{
+					this->_animHero.x++;
+					this->_clockIdle.restart();
+				}
+			}	
+			else
+				this->_animHero.x = 0;
 		}
 		if (this->_animHero.x > 8)
 			this->_animHero.x = 0;
 		this->_clockAnim.restart();
 	}
-}
 
-/*
-*	brief:  Check if player go to collision with map elements
-*	params: sf::FloatRect &, sf::FloatRect &
-*	return: void
-*/
-void	Input::checkCollision(sf::Sprite &heroSprite, sf::FloatRect cubBox)
-{
-	sf::FloatRect	heroBox = heroSprite.getGlobalBounds();
-	if (heroBox.intersects(cubBox))
-	{
-		std::cout << "hit...!\n";
-		heroSprite.move(0, 0);
-	}
 }
 
 /*

@@ -26,9 +26,11 @@ Game::Game():	_window(),
 	if(!this->_font.loadFromFile("res/font/Anglican.ttf"))
 		throw std::logic_error("");
 	// load and rec first map from file
-	this->mapLoader("res/map/map_1.map");
+	this->mapLoader("res/map/map_1.map", 0);
 	if (!this->_map.load("res/sprites/tileset.png", sf::Vector2u(SPRITE_SIZE, SPRITE_SIZE), _mapLoaded, COLS, LINES))
 		throw std::logic_error("");
+	// load and rec first map collision from file
+	this->mapLoader("res/map/map_1_col.map", 1);
 }
 
 /*
@@ -64,7 +66,7 @@ void	Game::start()
 		sf::Event	event;
 		// manage keyboard events
 		this->_input.handlerInput(event, this->_window);
-		this->_input.checkBtn(this->_heroSprite);
+		this->_input.checkBtn(this->_heroSprite, this->_mapCollisionLoaded);
 
 //		this->_input.checkCollision(this->_heroSprite, cube.getGlobalBounds());
 
@@ -73,6 +75,24 @@ void	Game::start()
 	
 		this->_window.draw(this->_map);
 		this->_window.draw(this->_heroSprite);
+
+		//for debug collisions
+		for (unsigned int j = 0; j < 18; j++)
+		{
+			for (unsigned int i = 0; i < 25; i++)
+			{
+				if (this->_mapCollisionLoaded[i + j * 25])
+				{
+					sf::Vector2f	pos = sf::Vector2f(i * SPRITE_SIZE, j * SPRITE_SIZE);
+					this->_rects[i + j * 25].setPosition(pos);
+					this->_rects[i + j * 25].setSize(sf::Vector2f(SPRITE_SIZE, SPRITE_SIZE));
+					this->_rects[i + j * 25].setFillColor(sf::Color(250, 0, 0, 100));
+				//	this->_window.draw(this->_rects[i + j * 25]);
+				}
+			}
+		}
+
+		//end of debug mode
 
 		this->_window.display();
 	}
@@ -103,7 +123,7 @@ void    Game::initText(std::string const &str)
 *	params:	std:::string &
 *	return:	void
 */
-void	Game::mapLoader(std::string const &file_map)
+void	Game::mapLoader(std::string const &file_map, int type)
 {
 	// load map from file
 	std::ifstream	flux(file_map);
@@ -130,15 +150,27 @@ void	Game::mapLoader(std::string const &file_map)
 					throw std::logic_error("Error: map not compliant: map too long...\n");
 				char nb = content[i];
 				exploded.push_back(std::atoi(&nb));
-				if (exploded[box] < 0 || exploded[box] > 3)
-					throw std::logic_error("Error: value not compilant...\n");
+				if (type == 0)
+				{
+					if (exploded[box] < 0 || exploded[box] > 3)
+						throw std::logic_error("Error: Map: value not compilant...\n");
+				}
+				else if (type == 1)
+				{
+					if (exploded[box] < 0 || exploded[box] > 1)
+						throw std::logic_error("Error: Map_collision: value not compilant...\n");
+				}
 				box++;
 				
 			}
 		}
 	}
-	for (int i = 0; i < 450; i++)
-		this->_mapLoaded[i] = exploded[i];
+	if (type == 0)
+		for (int i = 0; i < 450; i++)
+			this->_mapLoaded[i] = exploded[i];
+	else if (type == 1)
+		for (int i = 0; i < 450; i++)
+			this->_mapCollisionLoaded[i] = exploded[i];
 }
 
 /*

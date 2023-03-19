@@ -39,12 +39,15 @@ class Game
 		Input				_input;
 		Map					_map;
 		int					_mapLoaded[450];
+		int					_mapCollisionLoaded[450];
 		sf::Text			_txt;
 
+		//---- for Debug ----//
+		sf::RectangleShape	_rects[450];
 		//---- canonical form ----//
 		Game(Game const &rhs);
 		Game	&operator=(Game const &rhs);
-		void	mapLoader(std::string const &file_map);
+		void	mapLoader(std::string const &file_map, int type);
 };
 
 #endif
