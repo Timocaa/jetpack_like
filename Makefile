@@ -21,7 +21,8 @@ INCLUDES = -I SFML_linux/include -I includes
 SRCS =	src/main.cpp \
 		src/Game.cpp \
 		src/Input.cpp \
-		src/Player.cpp
+		src/Player.cpp \
+		src/Items.cpp
 
 #====================================OBJECTS===================================#
 OBJS = ${SRCS:.cpp=.o}

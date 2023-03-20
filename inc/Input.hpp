@@ -48,21 +48,15 @@ class Input
 		~Input();
 		//---- member method ----//
 		void	handlerInput(sf::Event &event, sf::RenderWindow &window, Player &player);
-		void	checkBtn(Player &player, int *collisionMap);
+		void	handlerEvent(Player &player, int *collisionMap);
 
 	private:
 		//---- member object ----//
 		t_button	_button;
 		
-		sf::Clock		_clockAnim; //player
-		sf::Clock		_clockIdle; //player
-
 		//---- canonical form ----//
 		Input(Input const &rhs);
 		Input	&operator=(Input const &rhs);
-		//---- private methode ----//
-		void	animPlayer(Player &player);
-		void	checkCollision(sf::Sprite &heroSprite, int *collisionMap);
 };
 
 #endif

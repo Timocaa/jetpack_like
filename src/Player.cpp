@@ -17,7 +17,7 @@
 *	params:	void
 *	return:	void
 */
-Player::Player():	_texture(), _sprite(), _direction(1), _isFliyng(false),
+Player::Player():	_texture(), _sprite(), _direction(1), _fly(false),
 					_idle(true), _anim(0, 0)
 {
 	// load texture of player from file
@@ -37,6 +37,17 @@ Player::Player():	_texture(), _sprite(), _direction(1), _isFliyng(false),
 Player::Player(Player const &rhs)
 {
 	*this = rhs;
+}
+
+/*
+*	brief:	Assignement operator
+*	params:	Player const &
+*	return:	Player &
+*/
+Player	&Player::operator=(Player const &rhs)
+{
+	(void)rhs;
+	return (*this);
 }
 
 /*
@@ -66,7 +77,7 @@ int	Player::getDir() const
 */
 bool	Player::isFlying() const
 {
-	return (this->_isFliyng);
+	return (this->_fly);
 }
 
 /*
@@ -106,7 +117,7 @@ void	Player::setDir(int dir)
 */
 void	Player::setFly(bool fly)
 {
-	this->_isFliyng = fly;
+	this->_fly = fly;
 }
 
 /*
@@ -140,14 +151,39 @@ void	Player::setAnimY(int value)
 }
 
 /*
-*	brief:	Assignement operator
-*	params:	Player const &
-*	return:	Player &
+*	brief:	Determination of sprite to display for player animation
+*	params:	void
+*	return:	void
 */
-Player	&Player::operator=(Player const &rhs)
+void	Player::animPlayer()
 {
-	(void)rhs;
-	return (*this);
+	// check time passed for change the sprite of player
+	if (this->_clockAnim.getElapsedTime().asSeconds() > 0.05f)
+	{
+		// check if player is in movement
+		if (!this->_idle)
+			this->_anim.x++;
+		else
+		{
+			// check if player is flying
+			if (!this->_fly)
+			{
+				this->_anim.y = 0;
+				// check time passed for animation of player static
+				if (this->_clockIdle.getElapsedTime().asSeconds() > 0.7f)
+				{
+					this->_anim.x++;
+					this->_clockIdle.restart();
+				}
+			}
+			else
+				this->_anim.x = 0;
+		}
+		// handle loop of sprite animation
+		if (this->_anim.x > 8)
+			this->_anim.x = 0;
+		this->_clockAnim.restart();
+	}
 }
 
 /*

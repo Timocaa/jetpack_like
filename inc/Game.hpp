@@ -21,6 +21,7 @@
 #include "Player.hpp"
 #include "Input.hpp"
 #include "Map.hpp"
+#include "Items.hpp"
 
 #include <string>
 #include <vector>
@@ -48,9 +49,10 @@ class Game
 		sf::RenderWindow	_window;
 		sf::Font			_font;
 		Player				_player;
-		
 		Input				_input;
 		Map					_map;
+		Items				_item;
+
 		int					_mapLoaded[450];
 		int					_mapCollisionLoaded[450];
 		sf::Text			_txt;

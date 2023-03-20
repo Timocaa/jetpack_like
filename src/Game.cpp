@@ -21,7 +21,8 @@ Game::Game():	_window(),
 				_font(),
 				_player(),
 				_input(),
-				_map()
+				_map(),
+				_item()
 {
 	// window creation and settings
 	this->_window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT, 32), "Game", sf::Style::Default);
@@ -73,13 +74,17 @@ void	Game::start()
 		sf::Event	event;
 		// manage keyboard events
 		this->_input.handlerInput(event, this->_window, this->_player);
-		this->_input.checkBtn(this->_player, this->_mapCollisionLoaded);
+		this->_input.handlerEvent(this->_player, this->_mapCollisionLoaded);
+
+		// manage collectibles
+		this->_item.handlerItems(this->_mapCollisionLoaded);
 
 		// for display in the window
 		this->_window.clear(sf::Color::Black);
 	
 		this->_window.draw(this->_map);
 		this->_window.draw(this->_player.getSprite());
+		this->_window.draw(this->_item.getGazSprite());
 
 		//for debug collisions
 		for (unsigned int j = 0; j < 18; j++)

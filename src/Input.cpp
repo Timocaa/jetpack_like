@@ -17,7 +17,7 @@
 *	params: void
 *	return: void
 */
-Input::Input(): _clockAnim(), _clockIdle()
+Input::Input()
 {
 	this->_button.up = false;
 	this->_button.right = false;
@@ -91,7 +91,7 @@ void	Input::handlerInput(sf::Event &event, sf::RenderWindow &window, Player &pla
 *	params: Game &
 *	return: void
 */
-void Input::checkBtn(Player &player, int *collisionMap)
+void Input::handlerEvent(Player &player, int *collisionMap)
 {
 	int hPosX = round(player.getSprite().getPosition().x / SPRITE_SIZE);
 	int hPosY = round(player.getSprite().getPosition().y / SPRITE_SIZE);
@@ -169,46 +169,9 @@ void Input::checkBtn(Player &player, int *collisionMap)
 			player.setFly(false);
 	}
 	// handler animation sprite for player
-	this->animPlayer(player);
+	player.animPlayer();
 	player.getSprite().setTextureRect(sf::IntRect(player.coordSprite().x * SPRITE_SIZE,
 							player.coordSprite().y * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE));
-}
-
-/*
-*	brief:  setting sprite animation for player
-*	params: void
-*	return: void
-*/
-void	Input::animPlayer(Player &player)
-{
-	// check time passed for change the sprite of player
-	if (this->_clockAnim.getElapsedTime().asSeconds() > 0.05f)
-	{
-		// check if player is in movement
-		if (!player.isIdle())
-			player.setAnimX(player.coordSprite().x + 1);
-		else
-		{
-			// check if player is flying
-			if (!player.isFlying())
-			{
-				player.setAnimY(0);
-				// check time passed for animation of player static
-				if (this->_clockIdle.getElapsedTime().asSeconds() > 0.7f)
-				{
-					player.setAnimX(player.coordSprite().x + 1);
-					this->_clockIdle.restart();
-				}
-			}	
-			else
-				player.setAnimX(0);
-		}
-		// handle loop of sprite animation
-		if (player.coordSprite().x > 8)
-			player.setAnimX(0);
-		this->_clockAnim.restart();
-	}
-
 }
 
 /*

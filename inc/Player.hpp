@@ -15,7 +15,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
 class Player
 {
 	public:
@@ -37,14 +36,19 @@ class Player
 		void			setAnimX(int value);
 		void			setAnimY(int value);
 
+			//---- public methods
+		void			animPlayer();
+
 	private:
 		//---- member objects ----//
 		sf::Texture		_texture;
 		sf::Sprite		_sprite;
 		int				_direction;
-		bool			_isFliyng;
+		bool			_fly;
 		bool			_idle;
 		sf::Vector2i	_anim;
+		sf::Clock		_clockAnim;
+		sf::Clock		_clockIdle;
 
 		//---- canonical form ----//
 		Player(Player const &rhs);
