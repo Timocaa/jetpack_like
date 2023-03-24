@@ -18,7 +18,7 @@
 *	return:	void
 */
 Player::Player():	_texture(), _sprite(), _direction(1), _fly(false),
-					_idle(true), _anim(0, 0)
+					_idle(true), _anim(0, 0), _gaz(0)
 {
 	// load texture of player from file
 	if (!this->_texture.loadFromFile("res/sprites/player.png"))
@@ -148,6 +148,16 @@ void	Player::setAnimX(int value)
 void	Player::setAnimY(int value)
 {
 	this->_anim.y = value;
+}
+
+/*
+*	brief:	Add quntity of gaz
+*	params:	int
+*	return:	void
+*/
+void	Player::setGaz(int value)
+{
+	this->_gaz += value;
 }
 
 /*

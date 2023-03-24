@@ -6,14 +6,15 @@
 *	return:	void
 */
 Items::Items(): _gazTexture(), _gazSprite(), _clockAnim(),
-				_anim(), _falling(true)
+				_clockItemPop() ,_anim(), _falling(true),
+				_gaz(false),
+				_rand(std::chrono::system_clock::now().time_since_epoch().count())
 {
 	// load texture for gaz item
 	if (!this->_gazTexture.loadFromFile("res/sprites/gaz.png"))
 		throw std::logic_error("");
 	// set texture on gaz sprite
 	this->_gazSprite.setTexture(this->_gazTexture);
-	this->_gazSprite.setPosition(500, 40);
 }
 
 /*
@@ -40,7 +41,7 @@ Items	&Items::operator=(Items const &rhs)
 /*
 *	brief:	Getter for sprite of gaz 
 *	params:	void
-*	return:	void
+*	return:	sf::Sprite &
 */
 sf::Sprite	&Items::getGazSprite()
 {
@@ -48,26 +49,54 @@ sf::Sprite	&Items::getGazSprite()
 }
 
 /*
+*	brief:	Getter for need of gaz 
+*	params:	void
+*	return:	bool
+*/
+bool	Items::needGaz() const
+{
+	return (this->_gaz);
+}
+
+/*
 *	brief:	Manage all items in game
 *	params:	void
 *	return:	void
 */
-void	Items::handlerItems(int *collisionMap)
+void	Items::handlerItems(Player &player, int *collisionMap)
 {
-	// check collision if items is falling
-	if (this->_falling == true)
+	// rand for displayey another item
+	if (this->_clockItemPop.getElapsedTime().asSeconds() > 5 && !this->_gaz)
 	{
-		int IPosX = round(this->_gazSprite.getPosition().x / SPRITE_SIZE);
-		int IPosY = round((this->_gazSprite.getPosition().y + (SPEED_FALL * 7)) / SPRITE_SIZE);
-		if (!collisionMap[IPosX + IPosY * 25])
-			this->_gazSprite.move(0, SPEED_FALL);
-		else
-			this->_falling = false;
+		int posX = this->_boxRand(this->_rand) * 40;
+		this->_gazSprite.setPosition(posX, -40);
+		this->_gaz = true;
 	}
-	// update animation for items
-	this->animItems();
-	this->_gazSprite.setTextureRect(sf::IntRect(this->_anim.x * SPRITE_SIZE,
-								this->_anim.y * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE));
+	else if (this->_gaz)
+		this->_clockItemPop.restart();
+
+	// check collision if items is falling
+	if (this->_gaz)
+	{
+		if (this->_falling == true)
+		{
+			int IPosX = round(this->_gazSprite.getPosition().x / SPRITE_SIZE);
+			int IPosY = round((this->_gazSprite.getPosition().y + (SPEED_FALL * 7)) / SPRITE_SIZE);
+			if (!collisionMap[IPosX + IPosY * 25])
+				this->_gazSprite.move(0, SPEED_FALL);
+			else
+				this->_falling = false;
+		}
+		// check collision with player
+		sf::FloatRect	playerHitBox = player.getSprite().getGlobalBounds();
+		sf::FloatRect	itemHitBox = this->_gazSprite.getGlobalBounds();
+		if (playerHitBox.intersects(itemHitBox))
+			this->_gaz = false;
+		// update animation for items
+		this->animItems();
+		this->_gazSprite.setTextureRect(sf::IntRect(this->_anim.x * SPRITE_SIZE,
+									this->_anim.y * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE));
+	}
 }
 
 /*

@@ -77,13 +77,14 @@ void	Game::start()
 		this->_input.handlerEvent(this->_player, this->_mapCollisionLoaded);
 
 		// manage collectibles
-		this->_item.handlerItems(this->_mapCollisionLoaded);
+		this->_item.handlerItems(this->_player, this->_mapCollisionLoaded);
 
 		// for display in the window
 		this->_window.clear(sf::Color::Black);
 	
 		this->_window.draw(this->_map);
 		this->_window.draw(this->_player.getSprite());
+		if (this->_item.needGaz())
 		this->_window.draw(this->_item.getGazSprite());
 
 		//for debug collisions

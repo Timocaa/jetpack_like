@@ -35,6 +35,7 @@ class Player
 		void			setIdle(bool idle);
 		void			setAnimX(int value);
 		void			setAnimY(int value);
+		void			setGaz(int value);
 
 			//---- public methods
 		void			animPlayer();
@@ -49,6 +50,7 @@ class Player
 		sf::Vector2i	_anim;
 		sf::Clock		_clockAnim;
 		sf::Clock		_clockIdle;
+		int				_gaz;
 
 		//---- canonical form ----//
 		Player(Player const &rhs);
