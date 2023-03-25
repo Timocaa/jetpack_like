@@ -28,6 +28,7 @@ class Player
 		bool			isFlying() const;
 		bool			isIdle() const;
 		sf::Vector2i	coordSprite() const;
+		int				gazQuantity() const;
 
 			//---- Setters
 		void			setDir(int dir);

@@ -18,7 +18,7 @@
 *	return:	void
 */
 Player::Player():	_texture(), _sprite(), _direction(1), _fly(false),
-					_idle(true), _anim(0, 0), _gaz(0)
+					_idle(true), _anim(0, 0), _gaz(1000)
 {
 	// load texture of player from file
 	if (!this->_texture.loadFromFile("res/sprites/player.png"))
@@ -101,6 +101,16 @@ sf::Vector2i	Player::coordSprite() const
 }
 
 /*
+*	brief:	Getter the quantity of gaz on the player
+*	params:	void
+*	return:	int
+*/
+int	Player::gazQuantity() const
+{
+	return (this->_gaz);
+}
+
+/*
 *	brief:	Set the direction of player (1 to the right; -1 to the left)
 *	params:	int
 *	return:	void
@@ -158,6 +168,10 @@ void	Player::setAnimY(int value)
 void	Player::setGaz(int value)
 {
 	this->_gaz += value;
+	if (this->_gaz > 1000)
+		this->_gaz = 1000;
+	else if (this->_gaz < 0)
+		this->_gaz = 0;
 }
 
 /*

@@ -66,7 +66,12 @@ void	Input::handlerInput(sf::Event &event, sf::RenderWindow &window, Player &pla
     	    {
             	case sf::Keyboard::A: _button.left = true; break;
 	            case sf::Keyboard::D: _button.right = true; break;
-    	        case sf::Keyboard::W: _button.up = true; break;
+    	        case sf::Keyboard::W:
+					if (player.gazQuantity() > 0)
+						_button.up = true;
+					else
+						_button.up = false;
+					break;
         	    case sf::Keyboard::E: _button.action = true; break;
             	default: break;
 	        }
@@ -135,12 +140,13 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 			if (!collisionMap[hPosX + hPosY * 25])
 				player.getSprite().move(SPEED, 0);
     }
-    if (_button.up == true)
+    if (_button.up == true && player.gazQuantity() > 0)
     {
 		// set player in movement
 		player.setIdle(false);
 		// set player is flying
 		player.setFly(true);
+		player.setGaz(-4);
 		// set sprite for animation
 		if (player.getDir() == 1)
 			player.setAnimY(Up_right);
@@ -149,7 +155,7 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 		// check collision above the player
 		hPosY = round((player.getSprite().getPosition().y - (SPEED * 8)) / SPRITE_SIZE);
 		if (player.getSprite().getPosition().y - 1 > 0)
-			if (!collisionMap[hPosX + hPosY * 25])
+			if (!collisionMap[hPosX + hPosY * 25] && player.gazQuantity() > 0)
 				player.getSprite().move(0, -SPEED);
     }
     if (_button.action == true)

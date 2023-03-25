@@ -66,14 +66,12 @@ bool	Items::needGaz() const
 void	Items::handlerItems(Player &player, int *collisionMap)
 {
 	// rand for displayey another item
-	if (this->_clockItemPop.getElapsedTime().asSeconds() > 5 && !this->_gaz)
+	if (this->_clockItemPop.getElapsedTime().asSeconds() > 5 && !this->_gaz && player.gazQuantity() < 1000)
 	{
 		int posX = this->_boxRand(this->_rand) * 40;
 		this->_gazSprite.setPosition(posX, -40);
 		this->_gaz = true;
 	}
-	else if (this->_gaz)
-		this->_clockItemPop.restart();
 
 	// check collision if items is falling
 	if (this->_gaz)
@@ -91,7 +89,13 @@ void	Items::handlerItems(Player &player, int *collisionMap)
 		sf::FloatRect	playerHitBox = player.getSprite().getGlobalBounds();
 		sf::FloatRect	itemHitBox = this->_gazSprite.getGlobalBounds();
 		if (playerHitBox.intersects(itemHitBox))
+		{
+			player.setGaz(250);
 			this->_gaz = false;
+			this->_falling = true;
+			if (player.gazQuantity() < 1000)
+				this->_clockItemPop.restart();
+		}
 		// update animation for items
 		this->animItems();
 		this->_gazSprite.setTextureRect(sf::IntRect(this->_anim.x * SPRITE_SIZE,
