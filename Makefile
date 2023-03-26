@@ -22,7 +22,9 @@ SRCS =	src/main.cpp \
 		src/Game.cpp \
 		src/Input.cpp \
 		src/Player.cpp \
-		src/Items.cpp
+		src/Items.cpp \
+		src/Gaz.cpp \
+		src/Info.cpp
 
 #====================================OBJECTS===================================#
 OBJS = ${SRCS:.cpp=.o}

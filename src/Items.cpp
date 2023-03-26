@@ -5,16 +5,8 @@
 *	params:	void
 *	return:	void
 */
-Items::Items(): _gazTexture(), _gazSprite(), _clockAnim(),
-				_clockItemPop() ,_anim(), _falling(true),
-				_gaz(false),
-				_rand(std::chrono::system_clock::now().time_since_epoch().count())
+Items::Items(): _gaz()
 {
-	// load texture for gaz item
-	if (!this->_gazTexture.loadFromFile("res/sprites/gaz.png"))
-		throw std::logic_error("");
-	// set texture on gaz sprite
-	this->_gazSprite.setTexture(this->_gazTexture);
 }
 
 /*
@@ -45,7 +37,7 @@ Items	&Items::operator=(Items const &rhs)
 */
 sf::Sprite	&Items::getGazSprite()
 {
-	return (this->_gazSprite);
+	return (this->_gaz.getGazSprite());
 }
 
 /*
@@ -55,7 +47,7 @@ sf::Sprite	&Items::getGazSprite()
 */
 bool	Items::needGaz() const
 {
-	return (this->_gaz);
+	return (this->_gaz.needGaz());
 }
 
 /*
@@ -65,62 +57,23 @@ bool	Items::needGaz() const
 */
 void	Items::handlerItems(Player &player, int *collisionMap)
 {
-	// rand for displayey another item
-	if (this->_clockItemPop.getElapsedTime().asSeconds() > 5 && !this->_gaz && player.gazQuantity() < 1000)
-	{
-		int posX = this->_boxRand(this->_rand) * 40;
-		this->_gazSprite.setPosition(posX, -40);
-		this->_gaz = true;
-	}
-
-	// check collision if items is falling
-	if (this->_gaz)
-	{
-		if (this->_falling == true)
-		{
-			int IPosX = round(this->_gazSprite.getPosition().x / SPRITE_SIZE);
-			int IPosY = round((this->_gazSprite.getPosition().y + (SPEED_FALL * 7)) / SPRITE_SIZE);
-			if (!collisionMap[IPosX + IPosY * 25])
-				this->_gazSprite.move(0, SPEED_FALL);
-			else
-				this->_falling = false;
-		}
-		// check collision with player
-		sf::FloatRect	playerHitBox = player.getSprite().getGlobalBounds();
-		sf::FloatRect	itemHitBox = this->_gazSprite.getGlobalBounds();
-		if (playerHitBox.intersects(itemHitBox))
-		{
-			player.setGaz(250);
-			this->_gaz = false;
-			this->_falling = true;
-			if (player.gazQuantity() < 1000)
-				this->_clockItemPop.restart();
-		}
-		// update animation for items
-		this->animItems();
-		this->_gazSprite.setTextureRect(sf::IntRect(this->_anim.x * SPRITE_SIZE,
-									this->_anim.y * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE));
-	}
+	// rand for display another gaz item
+	if (player.gazQuantity() < MAX_GAZ)
+		this->_gaz.randPosition();
+	// manage gaz item if in windows or needed
+	if (this->_gaz.needGaz())
+		this->_gaz.handling(player, collisionMap);
 }
 
 /*
-*	brief:	Update animation of all items
-*	params:	void
+*	brief:	Draw all item of game
+*	params:	sf::Window &
 *	return:	void
 */
-void	Items::animItems()
+void	Items::draw(sf::RenderWindow &window)
 {
-	// check time passed for change the sprite of player
-	if (this->_clockAnim.getElapsedTime().asSeconds() > 0.05f)
-	{
-		if (!this->_falling)
-			this->_anim.x++;
-		else
-			this->_anim.x = 0;
-		if (this->_anim.x > 7)
-			this->_anim.x = 0;
-		this->_clockAnim.restart();
-	}	
+	if (this->_gaz.needGaz())
+			window.draw(this->_gaz.getGazSprite());
 }
 
 /*

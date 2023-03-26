@@ -22,6 +22,7 @@
 #include "Input.hpp"
 #include "Map.hpp"
 #include "Items.hpp"
+#include "Info.hpp"
 
 #include <string>
 #include <vector>
@@ -30,7 +31,6 @@
 
 #define WIN_WIDTH	1000
 #define WIN_HEIGHT	720
-#define SPRITE_SIZE	40
 #define COLS		25
 #define LINES		18
 
@@ -42,26 +42,25 @@ class Game
 		~Game();
 		//---- member methods ----//
 		void	start();
-		void	initText(std::string const &str);
 
 	private:
 		//---- member object ----//
 		sf::RenderWindow	_window;
-		sf::Font			_font;
 		Player				_player;
 		Input				_input;
 		Map					_map;
 		Items				_item;
+		Info				_info;
 
 		int					_mapLoaded[450];
 		int					_mapCollisionLoaded[450];
-		sf::Text			_txt;
 
-		//---- for Debug ----//
-		sf::RectangleShape	_rects[450];
-		//---- canonical form ----//
+		//---- private methods ----//
+			//---- canonical form
 		Game(Game const &rhs);
 		Game	&operator=(Game const &rhs);
+			
+			//---- methods
 		void	mapLoader(std::string const &file_map, int type);
 };
 

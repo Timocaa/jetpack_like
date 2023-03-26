@@ -15,6 +15,16 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+
+#define SPEED_PLAYER	3
+#define GRAV_SPEED		2
+#define MAX_GAZ 		1000
+#define MIN_GAZ 		0
+#define SPRITE_SIZE	    40
+#define SPEED_FALL_GAZ	3
+#define POP_GAZ         5
+#define GAZ_GAIN        250
+
 class Player
 {
 	public:

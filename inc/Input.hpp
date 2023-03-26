@@ -18,10 +18,6 @@
 #include <cmath>
 #include "Player.hpp"
 
-#define SPRITE_SIZE	40
-#define SPEED		3
-#define GRAV_SPEED	2
-
 struct t_button
 {
 	bool	right;

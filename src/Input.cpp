@@ -67,7 +67,7 @@ void	Input::handlerInput(sf::Event &event, sf::RenderWindow &window, Player &pla
             	case sf::Keyboard::A: _button.left = true; break;
 	            case sf::Keyboard::D: _button.right = true; break;
     	        case sf::Keyboard::W:
-					if (player.gazQuantity() > 0)
+					if (player.gazQuantity() > MIN_GAZ)
 						_button.up = true;
 					else
 						_button.up = false;
@@ -115,10 +115,10 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 		else
 			player.setAnimY(Up_left);
 		// check collision in left
-		hPosX = floor((player.getSprite().getPosition().x - (SPEED)) / SPRITE_SIZE);
-		if (player.getSprite().getPosition().x - SPEED > 0)
+		hPosX = floor((player.getSprite().getPosition().x - (SPEED_PLAYER)) / SPRITE_SIZE);
+		if (player.getSprite().getPosition().x - SPEED_PLAYER > 0)
 			if (!collisionMap[hPosX + hPosY * 25])
-				player.getSprite().move(-SPEED, 0);
+				player.getSprite().move(-SPEED_PLAYER, 0);
     }
     if (_button.right == true)
     {
@@ -135,10 +135,10 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 		else
 			player.setAnimY(Up_right);
 		// check collision in right
-		hPosX = ceil((player.getSprite().getPosition().x + (SPEED)) / SPRITE_SIZE);
+		hPosX = ceil((player.getSprite().getPosition().x + (SPEED_PLAYER)) / SPRITE_SIZE);
 		if (player.getSprite().getPosition().x < 1000 - SPRITE_SIZE)
 			if (!collisionMap[hPosX + hPosY * 25])
-				player.getSprite().move(SPEED, 0);
+				player.getSprite().move(SPEED_PLAYER, 0);
     }
     if (_button.up == true && player.gazQuantity() > 0)
     {
@@ -146,17 +146,17 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 		player.setIdle(false);
 		// set player is flying
 		player.setFly(true);
-		player.setGaz(-4);
+		player.setGaz(-2);
 		// set sprite for animation
 		if (player.getDir() == 1)
 			player.setAnimY(Up_right);
 		else
 			player.setAnimY(Up_left);
 		// check collision above the player
-		hPosY = round((player.getSprite().getPosition().y - (SPEED * 8)) / SPRITE_SIZE);
+		hPosY = round((player.getSprite().getPosition().y - (SPEED_PLAYER * 8)) / SPRITE_SIZE);
 		if (player.getSprite().getPosition().y - 1 > 0)
 			if (!collisionMap[hPosX + hPosY * 25] && player.gazQuantity() > 0)
-				player.getSprite().move(0, -SPEED);
+				player.getSprite().move(0, -SPEED_PLAYER);
     }
     if (_button.action == true)
     {
@@ -168,9 +168,9 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 	if (player.isFlying() && this->_button.up == false)
 	{
 		// check collision under the player
-		hPosY = round((player.getSprite().getPosition().y + (SPEED * 7)) / SPRITE_SIZE);
+		hPosY = round((player.getSprite().getPosition().y + (SPEED_PLAYER * 7)) / SPRITE_SIZE);
 		if (!collisionMap[hPosX + hPosY * 25])
-			player.getSprite().move(0, SPEED);
+			player.getSprite().move(0, SPEED_PLAYER);
 		else
 			player.setFly(false);
 	}

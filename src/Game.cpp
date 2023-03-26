@@ -18,11 +18,11 @@
 *	return:	void
 */
 Game::Game():	_window(),
-				_font(),
 				_player(),
 				_input(),
 				_map(),
-				_item()
+				_item(),
+				_info()
 {
 	// window creation and settings
 	this->_window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT, 32), "Game", sf::Style::Default);
@@ -30,9 +30,8 @@ Game::Game():	_window(),
 	this->_window.setVerticalSyncEnabled(true);
 //	this->_window.setFramerateLimit(26);
 	
-	// load font for text
-	if(!this->_font.loadFromFile("res/font/Anglican.ttf"))
-		throw std::logic_error("");
+	
+	
 	// load and rec first map from file
 	this->mapLoader("res/map/map_1.map", 0);
 	if (!this->_map.load("res/sprites/tileset.png", sf::Vector2u(SPRITE_SIZE, SPRITE_SIZE), _mapLoaded, COLS, LINES))
@@ -75,58 +74,24 @@ void	Game::start()
 		// manage keyboard events
 		this->_input.handlerInput(event, this->_window, this->_player);
 		this->_input.handlerEvent(this->_player, this->_mapCollisionLoaded);
-
-		// manage collectibles
+		// manage items
 		this->_item.handlerItems(this->_player, this->_mapCollisionLoaded);
-
-		// for display in the window
+		// update infos
+		this->_info.update(this->_player);
+		
+		// draw background of the window
 		this->_window.clear(sf::Color::Black);
-	
+		// draw the map
 		this->_window.draw(this->_map);
+		// draw player
 		this->_window.draw(this->_player.getSprite());
-		if (this->_item.needGaz())
-		this->_window.draw(this->_item.getGazSprite());
-
-		//for debug collisions
-		for (unsigned int j = 0; j < 18; j++)
-		{
-			for (unsigned int i = 0; i < 25; i++)
-			{
-				if (this->_mapCollisionLoaded[i + j * 25])
-				{
-					sf::Vector2f	pos = sf::Vector2f(i * SPRITE_SIZE, j * SPRITE_SIZE);
-					this->_rects[i + j * 25].setPosition(pos);
-					this->_rects[i + j * 25].setSize(sf::Vector2f(SPRITE_SIZE, SPRITE_SIZE));
-					this->_rects[i + j * 25].setFillColor(sf::Color(250, 0, 0, 100));
-				//	this->_window.draw(this->_rects[i + j * 25]);
-				}
-			}
-		}
-
-		//end of debug mode
-
+		// draw all items
+		this->_item.draw(this->_window);
+		// draw all info for game
+		this->_info.draw(this->_window);
+		// display image drawing in the window
 		this->_window.display();
 	}
-}
-
-/*
-*	brief:	Init txt for display
-*	params:	std::string const&
-*	return:	void
-*/
-void    Game::initText(std::string const &str)
-{
-    // set the font for text
-    this->_txt.setFont(this->_font);
-    // set characters in text
- 	if (str.size())
-		this->_txt.setString(str);
-    // set height of font
-    this->_txt.setCharacterSize(42);
-    // set color of text
-    this->_txt.setFillColor(sf::Color::Cyan);
-    // set style of text
-    this->_txt.setStyle(sf::Text::Bold | sf::Text::Underlined);
 }
 
 /*
