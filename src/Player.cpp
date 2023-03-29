@@ -18,7 +18,7 @@
 *	return:	void
 */
 Player::Player():	_texture(), _sprite(), _direction(1), _fly(false),
-					_idle(true), _anim(0, 0), _gaz(MAX_GAZ)
+					_idle(true), _anim(0, 0), _gaz(MAX_GAZ), _item(false)
 {
 	// load texture of player from file
 	if (!this->_texture.loadFromFile("res/sprites/player.png"))
@@ -111,6 +111,16 @@ int	Player::gazQuantity() const
 }
 
 /*
+*	brief:	check if player is in possesion of object
+*	params:	void
+*	return:	bool
+*/
+bool	Player::inPossession() const
+{
+	return (this->_item);
+}
+
+/*
 *	brief:	Set the direction of player (1 to the right; -1 to the left)
 *	params:	int
 *	return:	void
@@ -172,6 +182,16 @@ void	Player::setGaz(int value)
 		this->_gaz = MAX_GAZ;
 	else if (this->_gaz < MIN_GAZ)
 		this->_gaz = MIN_GAZ;
+}
+
+/*
+*	brief:	set if the player cacht a container
+*	params:	bool
+*	return:	void
+*/
+void	Player::setPossesion(bool value)
+{
+	this->_item = value;
 }
 
 /*

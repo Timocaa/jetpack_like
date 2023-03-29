@@ -72,11 +72,12 @@ void	Items::handlerItems(Player &player, int *collisionMap)
 	// rand for display another gaz item
 	if (player.gazQuantity() < MAX_GAZ)
 		this->_gaz.randPosition();
-	this->_box.randPosition();
+	if (this->_box.needBox() && !player.inPossession())
+		this->_box.randPosition();
 	// manage gaz item if in windows or needed
 	if (this->_gaz.needGaz())
 		this->_gaz.handling(player, collisionMap);
-	if (this->_box.needBox())
+ 	if (this->_box.containerUp())
 		this->_box.handling(player, collisionMap);
 }
 
@@ -87,10 +88,13 @@ void	Items::handlerItems(Player &player, int *collisionMap)
 */
 void	Items::draw(sf::RenderWindow &window)
 {
-	if (this->_gaz.needGaz())
-			window.draw(this->_gaz.getGazSprite());
+	// draw container if is up
 	if (this->_box.containerUp())
 			window.draw(this->_box.getSprite());
+	// draw gaz bottle in this order for case of same column with container
+	if (this->_gaz.needGaz())
+			window.draw(this->_gaz.getGazSprite());
+ 	
 }
 
 /*

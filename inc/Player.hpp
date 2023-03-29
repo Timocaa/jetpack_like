@@ -40,6 +40,7 @@ class Player
 		bool			isIdle() const;
 		sf::Vector2i	coordSprite() const;
 		int				gazQuantity() const;
+		bool			inPossession() const;
 
 			//---- Setters
 		void			setDir(int dir);
@@ -48,6 +49,7 @@ class Player
 		void			setAnimX(int value);
 		void			setAnimY(int value);
 		void			setGaz(int value);
+		void			setPossesion(bool value);
 
 			//---- public methods
 		void			animPlayer();
@@ -63,6 +65,7 @@ class Player
 		sf::Clock		_clockAnim;
 		sf::Clock		_clockIdle;
 		int				_gaz;
+		bool			_item;
 
 		//---- canonical form ----//
 		Player(Player const &rhs);

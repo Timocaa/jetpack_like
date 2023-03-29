@@ -160,9 +160,9 @@ void Input::handlerEvent(Player &player, int *collisionMap)
     }
     if (_button.action == true)
     {
-		player.setIdle(false);
-		player.setAnimY(Left);
-		std::cout << "action baby..." << std::endl;
+		if (player.getSprite().getPosition().x < 200
+			&& player.getSprite().getPosition().y == 600)
+			player.setPossesion(false);
     }
 	// handler gravity fall
 	if (player.isFlying() && this->_button.up == false)

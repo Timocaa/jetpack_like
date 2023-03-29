@@ -107,7 +107,7 @@ void    Container::handling(Player &player, int *collisionMap)
 	sf::FloatRect	itemHitBox = this->_sprite.getGlobalBounds();
 	if (playerHitBox.intersects(itemHitBox))
 	{
-//		player.setGaz(GAZ_GAIN);
+		player.setPossesion(true);
         this->_boxQuantity++;
 		this->_boxUp = false;
 		this->_falling = true;
@@ -126,7 +126,7 @@ void    Container::handling(Player &player, int *collisionMap)
 */
 void    Container::animSprite()
 {
-    if (this->_boxQuantity > 6)
+    if (this->_boxQuantity < 6)
         this->_boxType = 0;
     else
         this->_boxType = 1;
