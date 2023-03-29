@@ -18,6 +18,7 @@
 #include <cmath>
 #include "Player.hpp"
 #include "Gaz.hpp"
+#include "Container.hpp"
 
 class Items
 {
@@ -27,7 +28,7 @@ class Items
 		~Items();
 
 		//---- Getters ----//
-		sf::Sprite	&getGazSprite();
+	//	sf::Sprite	&getGazSprite();
 		bool		needGaz() const;
 
 		//---- member methods ----//
@@ -36,7 +37,8 @@ class Items
 
 	private:
 		//---- member object ----//
-		Gaz	_gaz;	
+		Gaz			_gaz;
+		Container	_box;
 
 		//---- canonical form ----//
 		Items(Items const &rhs);

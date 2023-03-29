@@ -72,7 +72,7 @@ bool    Gaz::needGaz() const
 
 /*
 *   brief:  Rand position in x for display another Gaz bottle
-*   params: int
+*   params: void
 *   return: void
 */
 void    Gaz::randPosition()
@@ -96,9 +96,9 @@ void    Gaz::handling(Player &player, int *collisionMap)
     if (this->_falling == true)
 	{
 		int IPosX = round(this->_gazSprite.getPosition().x / SPRITE_SIZE);
-		int IPosY = round((this->_gazSprite.getPosition().y + (SPEED_FALL_GAZ * 7)) / SPRITE_SIZE);
+		int IPosY = round((this->_gazSprite.getPosition().y + (SPEED_FALL_ITEM * 7)) / SPRITE_SIZE);
 		if (!collisionMap[IPosX + IPosY * 25])
-			this->_gazSprite.move(0, SPEED_FALL_GAZ);
+			this->_gazSprite.move(0, SPEED_FALL_ITEM);
 		else
 			this->_falling = false;
 	}

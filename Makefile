@@ -24,7 +24,8 @@ SRCS =	src/main.cpp \
 		src/Player.cpp \
 		src/Items.cpp \
 		src/Gaz.cpp \
-		src/Info.cpp
+		src/Info.cpp \
+		src/Container.cpp
 
 #====================================OBJECTS===================================#
 OBJS = ${SRCS:.cpp=.o}

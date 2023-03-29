@@ -21,8 +21,9 @@
 #define MAX_GAZ 		1000
 #define MIN_GAZ 		0
 #define SPRITE_SIZE	    40
-#define SPEED_FALL_GAZ	3
+#define SPEED_FALL_ITEM	3
 #define POP_GAZ         5
+#define POP_BOX			3
 #define GAZ_GAIN        250
 
 class Player

@@ -17,7 +17,7 @@
 *	params:	void
 *	return:	void
 */
-Items::Items(): _gaz()
+Items::Items(): _gaz(), _box()
 {
 }
 
@@ -47,10 +47,10 @@ Items	&Items::operator=(Items const &rhs)
 *	params:	void
 *	return:	sf::Sprite &
 */
-sf::Sprite	&Items::getGazSprite()
-{
-	return (this->_gaz.getGazSprite());
-}
+//sf::Sprite	&Items::getGazSprite()
+//{
+	//return (this->_gaz.getGazSprite());
+//}
 
 /*
 *	brief:	Getter for need of gaz 
@@ -72,9 +72,12 @@ void	Items::handlerItems(Player &player, int *collisionMap)
 	// rand for display another gaz item
 	if (player.gazQuantity() < MAX_GAZ)
 		this->_gaz.randPosition();
+	this->_box.randPosition();
 	// manage gaz item if in windows or needed
 	if (this->_gaz.needGaz())
 		this->_gaz.handling(player, collisionMap);
+	if (this->_box.needBox())
+		this->_box.handling(player, collisionMap);
 }
 
 /*
@@ -86,6 +89,8 @@ void	Items::draw(sf::RenderWindow &window)
 {
 	if (this->_gaz.needGaz())
 			window.draw(this->_gaz.getGazSprite());
+	if (this->_box.containerUp())
+			window.draw(this->_box.getSprite());
 }
 
 /*
