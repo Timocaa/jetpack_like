@@ -15,16 +15,18 @@ class Spaceship
         sf::Sprite          &getShipSprite();
         sf::RectangleShape  &getOutlineShape();
         sf::RectangleShape  &getFuelLvlShape();
+        int                 getNbPartSpaceship() const;
+        int                 getFuelLvl() const;
 
             //---- methods
         void    displayParts();
 
     private:
         //---- member objects ----//
-		sf::Texture		_texture;
-		sf::Sprite		_sprite;
-        int             _partOfSpaceship;
-        int             _fuelLevel;
+		sf::Texture		    _texture;
+		sf::Sprite		    _sprite;
+        int                 _partOfSpaceship;
+        int                 _fuelLevel;
         sf::RectangleShape  _outline;
         sf::RectangleShape  _level;
 

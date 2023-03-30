@@ -78,20 +78,26 @@ void	Game::start()
 		this->_item.handlerItems(this->_player, this->_mapCollisionLoaded);
 		// update infos
 		this->_info.update(this->_player);
-		
+
+		// check if game is over
+		if (this->_input.endOfGame())
+		{
+			std::cout << "\033[1;32mGreat Job....\033[0m" << std::endl;
+			this->_window.close();
+		}
 		// draw background of the window
 		this->_window.clear(sf::Color::Black);
 		// draw the map
 		this->_window.draw(this->_map);
+		// draw all items
+		this->_item.draw(this->_window);
+		// draw all info for game
+		this->_info.draw(this->_window);
 		// draw spaceship
 		if (this->_input.isCollected())
 			this->_input.drawSpaceship(this->_window);
 		// draw player
 		this->_window.draw(this->_player.getSprite());
-		// draw all items
-		this->_item.draw(this->_window);
-		// draw all info for game
-		this->_info.draw(this->_window);
 		// display image drawing in the window
 		this->_window.display();
 	}

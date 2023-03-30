@@ -46,6 +46,7 @@ class Input
 		//---- member method ----//
 			//---- getter
 		bool	isCollected() const;
+		bool	endOfGame() const;
 
 			//---- methods
 		void	handlerInput(sf::Event &event, sf::RenderWindow &window, Player &player);

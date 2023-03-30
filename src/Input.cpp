@@ -58,6 +58,18 @@ bool	Input::isCollected() const
 }
 
 /*
+*   brief:  check if Game is over
+*   param:  void
+*   return: bool
+*/
+bool	Input::endOfGame() const
+{
+	if (!this->_spaceship.getNbPartSpaceship() && !this->_spaceship.getFuelLvl())
+		return (true);
+	return (false);
+}
+
+/*
 *	brief:  Handler keyboard event
 *	params: sf::Event &, sf::RenderWindow &
 *	return: void
@@ -196,6 +208,7 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 	player.animPlayer();
 	player.getSprite().setTextureRect(sf::IntRect(player.coordSprite().x * SPRITE_SIZE,
 							player.coordSprite().y * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE));
+	// check if it's end of game
 }
 
 /*
@@ -206,8 +219,11 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 void	Input::drawSpaceship(sf::RenderWindow &window)
 {
 	window.draw(this->_spaceship.getShipSprite());
-	window.draw(this->_spaceship.getOutlineShape());
-	window.draw(this->_spaceship.getFuelLvlShape());
+	if (this->_spaceship.getNbPartSpaceship() <= 0)
+	{
+		window.draw(this->_spaceship.getOutlineShape());
+		window.draw(this->_spaceship.getFuelLvlShape());
+	}
 }
 
 /*

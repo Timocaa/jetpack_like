@@ -5,19 +5,20 @@
 *   param:  void
 *   return: void
 */
-Spaceship::Spaceship():	_texture(), _sprite(), _partOfSpaceship(4), _fuelLevel(4),
-                        _outline(sf::Vector2f(10.f, 90.f)), _level(sf::Vector2f(10.f, 80.f))
+Spaceship::Spaceship():	_texture(), _sprite(), _partOfSpaceship(4), _fuelLevel(6),
+                        _outline(sf::Vector2f(10.f, 90.f)), _level(sf::Vector2f(0.f, 0.f))
 {
     // load texture of spaceship from file
 	if (!this->_texture.loadFromFile("res/sprites/spaceship.png"))
 		throw std::logic_error("");
 	// set texture to sprite for use
 	this->_sprite.setTexture(this->_texture);
-    // create rectanle for fuel level
+    // create rectanle outline for fuel level
     _outline.setFillColor(sf::Color::Black);
     _outline.setOutlineColor(sf::Color::White);
     _outline.setOutlineThickness(2);
-    _outline.setPosition(10,500);
+    _outline.setPosition(10, 500);
+    // create rectangle for level of fuel
     _level.setFillColor(sf::Color::Red);
 }
 
@@ -73,6 +74,26 @@ sf::RectangleShape  &Spaceship::getFuelLvlShape()
 }
 
 /*
+*   brief:  Get number of part of spaceship remaining
+*   param:  void
+*   return: int
+*/
+int Spaceship::getNbPartSpaceship() const
+{
+    return (this->_partOfSpaceship);
+}
+
+/*
+*   brief:  Get level of fuel remaining
+*   param:  void
+*   return: int
+*/
+int Spaceship::getFuelLvl() const
+{
+    return (this->_fuelLevel);
+}
+
+/*
 *   brief:  manage display of spaceship elements and fuel level
 *   param:  Player &
 *   return: void
@@ -83,8 +104,10 @@ void    Spaceship::displayParts()
         this->_partOfSpaceship--;
     else
         this->_fuelLevel--;
+    // update sprite of spaceship
     this->spriteSpaceshipElements();
-   // if (!this->_partOfSpaceship)
+    // update rectangle of lvl of fuel
+    if (!this->_partOfSpaceship)
         this->updateFuelLvl();
 }
 
@@ -123,16 +146,42 @@ void    Spaceship::spriteSpaceshipElements()
 }
 
 /*
-*   brief:  update display offuel level
+*   brief:  update for display fuel level
 *   param:  void
 *   return: void
 */
 void    Spaceship::updateFuelLvl()
 {
-    this->_level.setPosition(10, 500);
-    this->_level.setSize(sf::Vector2f(10.f, 90.f));
-    
-    
+    // set position and size of rectangle for lvl of fuel
+    switch (this->_fuelLevel)
+    {
+        case 0:
+            this->_level.setPosition(10, 500); //500 --> 590
+            this->_level.setSize(sf::Vector2f(10.f, 90.f));
+            break;
+        case 1:
+            this->_level.setPosition(10, 515); //500 --> 590
+            this->_level.setSize(sf::Vector2f(10.f, 75.f));
+            break;
+        case 2:
+            this->_level.setPosition(10, 530); //500 --> 590
+            this->_level.setSize(sf::Vector2f(10.f, 60.f));
+            break;
+        case 3:
+            this->_level.setPosition(10, 545); //500 --> 590
+            this->_level.setSize(sf::Vector2f(10.f, 45.f));
+            break;
+        case 4:
+            this->_level.setPosition(10, 560);
+            this->_level.setSize(sf::Vector2f(10.f, 30.f));
+            break;
+        case 5:
+            this->_level.setPosition(10, 575);
+            this->_level.setSize(sf::Vector2f(10.f, 15.f));
+            break;
+        default:
+            break;
+    }
 }
 
 /*
