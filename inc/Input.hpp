@@ -17,6 +17,7 @@
 #include <iostream>
 #include <cmath>
 #include "Player.hpp"
+#include "Spaceship.hpp"
 
 struct t_button
 {
@@ -43,12 +44,19 @@ class Input
 		Input();
 		~Input();
 		//---- member method ----//
+			//---- getter
+		bool	isCollected() const;
+
+			//---- methods
 		void	handlerInput(sf::Event &event, sf::RenderWindow &window, Player &player);
 		void	handlerEvent(Player &player, int *collisionMap);
+		void	drawSpaceship(sf::RenderWindow &window);
 
 	private:
 		//---- member object ----//
 		t_button	_button;
+		bool		_collected;
+		Spaceship	_spaceship;
 		
 		//---- canonical form ----//
 		Input(Input const &rhs);

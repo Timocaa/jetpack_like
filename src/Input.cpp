@@ -17,7 +17,7 @@
 *	params: void
 *	return: void
 */
-Input::Input()
+Input::Input(): _collected(false), _spaceship()
 {
 	this->_button.up = false;
 	this->_button.right = false;
@@ -45,6 +45,16 @@ Input	&Input::operator=(Input const &rhs)
 {
 	(void)rhs;
 	return (*this);
+}
+
+/*
+*   brief:  check if first element is collected
+*   param:  void
+*   return: bool
+*/
+bool	Input::isCollected() const
+{
+	return (this->_collected);
 }
 
 /*
@@ -162,7 +172,15 @@ void Input::handlerEvent(Player &player, int *collisionMap)
     {
 		if (player.getSprite().getPosition().x < 200
 			&& player.getSprite().getPosition().y == 600)
+		{
+			// here pop the space ship or fuel lvl
+			if (player.inPossession())
+			{
+				this->_spaceship.displayParts();
+				this->_collected = true;
+			}
 			player.setPossesion(false);
+		}
     }
 	// handler gravity fall
 	if (player.isFlying() && this->_button.up == false)
@@ -178,6 +196,18 @@ void Input::handlerEvent(Player &player, int *collisionMap)
 	player.animPlayer();
 	player.getSprite().setTextureRect(sf::IntRect(player.coordSprite().x * SPRITE_SIZE,
 							player.coordSprite().y * SPRITE_SIZE, SPRITE_SIZE, SPRITE_SIZE));
+}
+
+/*
+*	brief:  Draw the spaceship and fuel lvl
+*	params: void
+*	return: void
+*/
+void	Input::drawSpaceship(sf::RenderWindow &window)
+{
+	window.draw(this->_spaceship.getShipSprite());
+	window.draw(this->_spaceship.getOutlineShape());
+	window.draw(this->_spaceship.getFuelLvlShape());
 }
 
 /*

@@ -65,7 +65,7 @@ bool    Container::containerUp() const
 */
 bool    Container::needBox() const
 {
-    if (this->_boxQuantity < 12)
+    if (this->_boxQuantity < 10)
         return (true);
     return (false);
 }
@@ -126,7 +126,7 @@ void    Container::handling(Player &player, int *collisionMap)
 */
 void    Container::animSprite()
 {
-    if (this->_boxQuantity < 6)
+    if (this->_boxQuantity < 4)
         this->_boxType = 0;
     else
         this->_boxType = 1;

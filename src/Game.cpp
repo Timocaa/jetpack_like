@@ -83,6 +83,9 @@ void	Game::start()
 		this->_window.clear(sf::Color::Black);
 		// draw the map
 		this->_window.draw(this->_map);
+		// draw spaceship
+		if (this->_input.isCollected())
+			this->_input.drawSpaceship(this->_window);
 		// draw player
 		this->_window.draw(this->_player.getSprite());
 		// draw all items

@@ -11,7 +11,13 @@ class Spaceship
         Spaceship();
         ~Spaceship();
         //---- member methods ----//
-        void    displayParts(Player &player);
+            //---- getters
+        sf::Sprite          &getShipSprite();
+        sf::RectangleShape  &getOutlineShape();
+        sf::RectangleShape  &getFuelLvlShape();
+
+            //---- methods
+        void    displayParts();
 
     private:
         //---- member objects ----//
@@ -19,6 +25,8 @@ class Spaceship
 		sf::Sprite		_sprite;
         int             _partOfSpaceship;
         int             _fuelLevel;
+        sf::RectangleShape  _outline;
+        sf::RectangleShape  _level;
 
         //---- private methods ----//
             //---- canonical form

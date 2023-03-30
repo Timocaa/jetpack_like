@@ -5,13 +5,20 @@
 *   param:  void
 *   return: void
 */
-Spaceship::Spaceship():	_texture(), _sprite(), _partOfSpaceship(4), _fuelLevel(4)
+Spaceship::Spaceship():	_texture(), _sprite(), _partOfSpaceship(4), _fuelLevel(4),
+                        _outline(sf::Vector2f(10.f, 90.f)), _level(sf::Vector2f(10.f, 80.f))
 {
     // load texture of spaceship from file
 	if (!this->_texture.loadFromFile("res/sprites/spaceship.png"))
 		throw std::logic_error("");
 	// set texture to sprite for use
 	this->_sprite.setTexture(this->_texture);
+    // create rectanle for fuel level
+    _outline.setFillColor(sf::Color::Black);
+    _outline.setOutlineColor(sf::Color::White);
+    _outline.setOutlineThickness(2);
+    _outline.setPosition(10,500);
+    _level.setFillColor(sf::Color::Red);
 }
 
 /*
@@ -36,18 +43,48 @@ Spaceship   &Spaceship::operator=(Spaceship const &rhs)
 }
 
 /*
+*   brief:  Get the Sprite of spaceship
+*   param:  void
+*   return: sf::Sprite  &
+*/
+sf::Sprite  &Spaceship::getShipSprite()
+{
+    return (this->_sprite);
+}
+
+/*
+*   brief:  Get the outline rectangle of fuel lvl
+*   param:  void
+*   return: sf::RectangleShape &
+*/
+sf::RectangleShape  &Spaceship::getOutlineShape()
+{
+    return (this->_outline);
+}
+
+/*
+*   brief:  Get the fuel lvl rectangle
+*   param:  void
+*   return: sf::RectangleShape &
+*/
+sf::RectangleShape  &Spaceship::getFuelLvlShape()
+{
+    return (this->_level);
+}
+
+/*
 *   brief:  manage display of spaceship elements and fuel level
 *   param:  Player &
 *   return: void
 */
-void    Spaceship::displayParts(Player &player)
+void    Spaceship::displayParts()
 {
     if (this->_partOfSpaceship > 0)
         this->_partOfSpaceship--;
     else
         this->_fuelLevel--;
     this->spriteSpaceshipElements();
-    if (!this->_partOfSpaceship)
+   // if (!this->_partOfSpaceship)
         this->updateFuelLvl();
 }
 
@@ -61,24 +98,24 @@ void    Spaceship::spriteSpaceshipElements()
     switch (this->_partOfSpaceship)
     {
         case 0:
-            this->_sprite.setTextureRect(sf::IntRect(this->_partOfSpaceship * SPRITE_SIZE,
-								    0, SPRITE_SIZE, SPRITE_SIZE * 4));
-            this->_sprite.setPosition(0, 600 - SPRITE_SIZE * 4);
-            break;
-        case 1:
-            this->_sprite.setTextureRect(sf::IntRect(this->_partOfSpaceship * SPRITE_SIZE,
-								    0, 120, SPRITE_SIZE * 3));
+            this->_sprite.setTextureRect(sf::IntRect(0, this->_partOfSpaceship * SPRITE_SIZE,
+								    120, SPRITE_SIZE * 4));
             this->_sprite.setPosition(0, 600 - SPRITE_SIZE * 3);
             break;
-        case 2:
-            this->_sprite.setTextureRect(sf::IntRect(this->_partOfSpaceship * SPRITE_SIZE,
-								    0, 120, SPRITE_SIZE * 2));
+        case 1:
+            this->_sprite.setTextureRect(sf::IntRect(0, this->_partOfSpaceship * SPRITE_SIZE,
+								    120, SPRITE_SIZE * 3));
             this->_sprite.setPosition(0, 600 - SPRITE_SIZE * 2);
             break;
-        case 3:
-            this->_sprite.setTextureRect(sf::IntRect(this->_partOfSpaceship * SPRITE_SIZE,
-								    0, 120, SPRITE_SIZE));
+        case 2:
+            this->_sprite.setTextureRect(sf::IntRect(0, this->_partOfSpaceship * SPRITE_SIZE,
+								    120, SPRITE_SIZE * 2));
             this->_sprite.setPosition(0, 600 - SPRITE_SIZE);
+            break;
+        case 3:
+            this->_sprite.setTextureRect(sf::IntRect(0, this->_partOfSpaceship * SPRITE_SIZE,
+								    120, SPRITE_SIZE));
+            this->_sprite.setPosition(0, 600);
             break;
         default:
             break;
@@ -92,7 +129,10 @@ void    Spaceship::spriteSpaceshipElements()
 */
 void    Spaceship::updateFuelLvl()
 {
-    //on vera plus tard la je vais me coucher
+    this->_level.setPosition(10, 500);
+    this->_level.setSize(sf::Vector2f(10.f, 90.f));
+    
+    
 }
 
 /*
