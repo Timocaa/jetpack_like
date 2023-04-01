@@ -28,16 +28,15 @@ Game::Game():	_window(),
 	this->_window.create(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT, 32), "Game", sf::Style::Default);
 	// vsync activation
 	this->_window.setVerticalSyncEnabled(true);
-//	this->_window.setFramerateLimit(26);
-	
-	
-	
 	// load and rec first map from file
 	this->mapLoader("res/map/map_1.map", 0);
 	if (!this->_map.load("res/sprites/tileset.png", sf::Vector2u(SPRITE_SIZE, SPRITE_SIZE), _mapLoaded, COLS, LINES))
 		throw std::logic_error("");
 	// load and rec first map collision from file
 	this->mapLoader("res/map/map_1_col.map", 1);
+	// create all aliens
+	for (int i = 0; i < NBALIENS; i++)
+		this->_aliens.push_back(new Alien());
 }
 
 /*
@@ -76,15 +75,12 @@ void	Game::start()
 		this->_input.handlerEvent(this->_player, this->_mapCollisionLoaded);
 		// manage items
 		this->_item.handlerItems(this->_player, this->_mapCollisionLoaded);
+		// manage aliens
+		for (int i = 0; i < NBALIENS; i++)
+			this->_aliens[i]->handlerAlien(this->_player, this->_mapCollisionLoaded);
 		// update infos
 		this->_info.update(this->_player);
 
-		// check if game is over
-		if (this->_input.endOfGame())
-		{
-			std::cout << "\033[1;32mGreat Job....\033[0m" << std::endl;
-			this->_window.close();
-		}
 		// draw background of the window
 		this->_window.clear(sf::Color::Black);
 		// draw the map
@@ -96,10 +92,16 @@ void	Game::start()
 		// draw spaceship
 		if (this->_input.isCollected())
 			this->_input.drawSpaceship(this->_window);
+		// draw all aliens
+		for (int i = 0; i < NBALIENS; i++)
+			this->_aliens[i]->draw(this->_window);
 		// draw player
 		this->_window.draw(this->_player.getSprite());
 		// display image drawing in the window
 		this->_window.display();
+		// check if game is over
+		if (this->checkEndOfGame())
+			this->_window.close();
 	}
 }
 
@@ -159,11 +161,37 @@ void	Game::mapLoader(std::string const &file_map, int type)
 }
 
 /*
+*	brief:	check if game is ended
+*	params:	Input &, std::vector<Alien *>	&
+*	return:	bool
+*/
+bool	Game::checkEndOfGame()
+{
+	// check for player win
+	if (this->_input.endOfGame())
+	{
+		std::cout << "\033[1;32mGreat Job....\033[0m" << std::endl;
+		return (true);
+	}
+	for (int i = 0; i < NBALIENS; i++)
+	{
+		if (this->_aliens[i]->isGameOver())
+		{
+			std::cout << "\033[1;31mGAME OVER...\n\t\tTry again...\033[0m" << std::endl;
+			return (true);
+		}
+	}
+	return (false);
+}
+
+/*
 *	brief:	destructor
 *	params:	void
 *	return:	void
 */
 Game::~Game()
 {
-
+	for (int i = 0; i < NBALIENS; i++)
+		delete this->_aliens[i];
+	this->_aliens.clear();
 }

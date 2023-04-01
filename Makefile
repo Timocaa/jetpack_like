@@ -26,7 +26,8 @@ SRCS =	src/main.cpp \
 		src/Gaz.cpp \
 		src/Info.cpp \
 		src/Container.cpp \
-		src/Spaceship.cpp
+		src/Spaceship.cpp \
+		src/Alien.cpp
 
 #====================================OBJECTS===================================#
 OBJS = ${SRCS:.cpp=.o}
